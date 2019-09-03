@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% block title %}查看应聘{% endblock %}
+{% block css %}
+<style>
+    .button {
+        background-color: #030303;
+        color: #fff;
+        padding: 5px 10px 5px 10px;
+        margin-left: 10px;
+        border-radius: 5px;
+    }
+
+    .std {
+        padding: 30px;
+        padding-left: 80px;
+        float: left;
+        width: 400px;
+    }
+
+    .jl {
+        float: right;
+        width: 400px;
+    }
+
+    .jl textarea {
+        width: 90%;
+        height: 120px;
+        resize: none;
+        background-color: transparent;
+        border: 0;
+    }
+</style>
+{% endblock %}
+{% block nav %}
+<li class="nav-item">
+    <a class="nav-link" href="/cIndex">公司首页</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" href="/cAppli">查看应聘</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/">进入用户版</a>
+</li>
+{% endblock %}
+
+{% block body %}
+<div class="container" style="height: 1000px">
+    <div class="col-sm-10 table-responsive">
+        <table class="table table-hover" style="width: 900px">
+            <thead>
+            <tr>
+                <th>职位名称</th>
+                <th>应聘人</th>
+                <th>邮件</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in object_list %}
+            <tr>
+                <td style="width: 150px">{{row.jobName}}</td>
+                <td style="width: 150px">{{row.name}}</td>
+                <td style="width: 150px">{{row.email}}</td>
+                <td style="width:300px">
+                    <!--<a user_id="{{row.user_id}}" class="button" style="color: #ffffff">拒绝</a>-->
+                    <!--<a user_id="{{row.user_id}}" id="send" class="button" style="color: #ffffff">请他面试</a>-->
+                    <a user_id="{{row.user_id}}" id="look_cv" class="button" style="color: #ffffff" data-toggle="modal" data-target="#jl_model">查看简历</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 模态框 -->
+<div class="modal fade" id="jl_model" style="font-family: KaiTi;font-size: 18px">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width: 900px;height: 700px;background-color: #030303">
+            <!-- 模态框头部 -->
+            <div class="modal-header" style="color: #ffffff">
+                <h4 class="modal-title">简历</h4>
+                <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+            </div>
+            <!-- 模态框主体 -->
+            <div class="modal-body" style="background-image: url('/static/book.jpg');background-repeat: no-repeat">
+                <div class="std">
+                    <p>性别：<span id="sex"></span></p>
+                    <p>年龄：<span id="age"></span></p>
+                    <p>学历：<span id="edu"></span></p>
+                    <p>特长：<span id="tc"></span></p>
+                    <p>技能：<span id="jn"></span></p>
+                    <p>电话：<span id="tel"></span></p>
+
+                    <p>希望薪水：
+                        <span id="K1"></span>K - <span id="K2"></span>K</p>
+                    <p>工作经验：<span id="exp"></span>年
+                    </p>
+                    <p>意向职位：<span id="wantJob"></span></p>
+                    <p>毕业学校：<span id="school"></span></p>
+                </div>
+                <div class="jl">
+                    <p>
+                    <h3>工作经历</h3></p>
+                    <textarea id="gzjl" cols="" rows="" readonly></textarea>
+
+                    <p>
+                    <h3>教育背景</h3></p>
+                    <textarea id="jybj" cols="" rows="" readonly></textarea>
+
+                    <p>
+                    <h3>自我介绍</h3></p>
+                    <textarea id="zwjs" cols="" rows="" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'page.html' %}
+<script>
+    function strToJson(str){
+        var json = eval('(' + str + ')');
+        return json;
+    }
+
+    $('#look_cv').click(function () {
+        data={};
+        data.user_id=$(this).attr('user_id');
+        $.get('/lookCV',data,function (result,status) {
+            console.log(result);
+            console.log(typeof result)
+            j=strToJson(result);
+            $('#sex').html(j.sex);
+            $('#age').html(j.age);
+            $('#edu').html(j.edu);
+            $('#tc').html(j.tech);
+            $('#jn').html(j.super);
+            $('#tel').html(j.tel);
+            $('#exp').html(j.exp);
+            $('#K1').html(j.K1);
+            $('#wantJob').html(j.wantJob);
+            $('#school').html(j.school);
+            $('#wantJob').html(j.wantJob);
+            $('#K2').html(j.K2);
+            $('#gzjl').html(j.gzjl);
+            $('#jybj').html(j.jybj);
+            $('#zwjs').html(j.zwjs);
+        });
+    });
+
+    $('#send').click(function () {
+        $.get('/send',{},function (result,status) {
+            toastr.success('成功发送邮箱');
+        })
+    });
+</script>
+{% endblock %}

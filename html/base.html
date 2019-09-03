@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <link href="{% static 'toastr.css' %}" rel="stylesheet" />
+    <script src="{% static 'toastr.min.js' %}"></script>
+    <script src="https://echarts.baidu.com/dist/echarts.js"></script>
+    {% block css %}{% endblock %}
+</head>
+
+<script>
+    $(document).ready(function(){
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+
+        $("#logout").click(function () {
+            $.post("/logout",{},function(result,status){
+                //alert(result);
+                if(status=="success"){
+                    window.location.reload();
+                }
+            });
+        });
+
+
+        $("#submit").click(function(){
+            $.get("/login",$("#login_form").serialize(),function(result,status){
+                if(result=="登录成功")
+                    window.location.reload()
+                else{
+                    r='<div class="alert alert-danger">\n' +
+                    '\t                <a class="close" data-dismiss="alert">×</a>\n' +
+                    '                    <span>'+ result +'</span>\n' +
+                    '\t            </div>'
+                    $("#logData").html(r);
+                    //toastr.error(result);
+                }
+                // alert(result);
+                // data=$("form").serialize();
+                // alert(data)
+            });
+        });
+    });
+</script>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="font-family: KaiTi;font-size: 18px;">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        菜单<span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            {% block nav %}
+            <li class="nav-item">
+                <a class="nav-link" href="/">首页<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/jlpp">简历推荐</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/view">行业分析</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/me">我的简历</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/cIndex">进入企业版</a>
+            </li>
+            {% endblock %}
+        </ul>
+        <a class="text-white" data-toggle="modal" data-target="#myModal">{{ user|safe }} </a>
+    </div>
+</nav>
+
+    <!-- 模态框 -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- 模态框头部 -->
+        <div class="modal-header">
+          <h4 class="modal-title">登录</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- 模态框主体 -->
+        <div class="modal-body">
+          <form action="javascript:void(0);" class="form-group" id="login_form">
+                <input class="form-control" name="username" type="text" placeholder="用户名">
+                <p></p>
+                <input class="form-control" name="password" type="password" placeholder="密码">
+                <p></p>
+                <p id="logData"></p>
+
+                <p><a href="/forgot">忘记密码？</a> <a href="/register">注册</a></p>
+                <input id="submit" class="btn btn-success btn-block" type="submit" value="登录">
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+    <!--end 模态框-->
+{% block body %}{% endblock %}
+<div class="text-center" style="margin:0;padding:10px;background:#eee">
+    <pre>销售热线：400-886-0051  027-8781xxxx
+客服热线：400-620-xxxx
+Email：club@nb.com（个人）
+hr@51nb.com（公司）</pre>
+</div>
+{% block script %}{% endblock %}
+</body>
+</html>

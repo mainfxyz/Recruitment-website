@@ -1,0 +1,96 @@
+a:link{text-decoration:none; cursor:pointer;}
+a:hover{text-decoration:none; cursor:pointer;}
+a{
+    text-decoration: none;
+    cursor:pointer;
+}
+body{
+    font-size: 16px;
+}
+
+.screen li a{
+    margin-right: 5px;
+    padding: 3px 6px;
+    height: 14px;
+    line-height: 14px;
+
+    color: #555;
+}
+.screen li{
+    padding: 6px 16px;
+}
+.screen li a:hover{
+    background-color: #343a40;
+    color:#fff!important;
+}
+
+.screen{
+    list-style: none;
+    background:#fafafa;
+    border: 1px solid #ededed;
+    padding: 6px 0;
+}
+.screen span{
+    font-weight: 600;
+    margin-right: -5px;
+}
+
+.chosen {
+    background-color: #343a40;
+    color:#fff!important;
+}
+
+.si{
+    display: inline-block;
+    padding: 24px 15px;
+    width: 80%;
+    height: 20px;
+    line-height: 20px;
+    border: 1px solid #231f20;
+    border-right: 0;
+    margin: 0;
+    font-size: 16px;
+    float : left;
+}
+
+.sb{
+    background-color: #343a40;
+    color: #fff;
+    border: 0;
+    margin: 0;
+    height:50px;
+    width:20%;
+}
+.sf{
+    margin-top: 30px;
+    margin-bottom: 50px;
+    width:100%;
+}
+
+article{
+    border: 1px solid #ededed;
+    margin-top: 18px;
+    padding: 20px;
+}
+.jobName{
+    font-size:19px;
+    color: #00b38a;
+}
+.jobName:hover{color: #00b38a;}
+
+.company{
+    color:#000;
+    font-size:15px;
+}
+.company:hover{color:#000;}
+
+.yp{
+    padding: 7px 25px 7px 25px;
+    color:#fff;
+    background-color:#343a40;
+    border-radius: 4px;
+    float: right;
+}
+.shouc:hover{
+    color:blue;
+}

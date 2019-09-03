@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}个人简历{% endblock %}
+{% block css %}
+    <style type="text/css">
+
+        body {
+            background-color: #000;
+            background-image: url('/static/timg.jpg');
+            margin: 0;
+            padding: 0;
+            font-family: KaiTi;
+            font-size: 18px;
+        }
+
+
+
+        .section {
+            max-width: 920px;
+            margin-top: 5%;
+        }
+
+        .std {
+            padding: 30px;
+            padding-left: 80px;
+            background-image: url("/static/book1.jpg");
+            background-repeat:no-repeat;
+        }
+
+        .jl {
+            background-image: url("/static/book2.jpg");
+            background-repeat:no-repeat;
+        }
+
+        .jl textarea {
+            width: 90%;
+            height: 120px;
+            resize: none;
+            background-color: transparent;
+        }
+
+        .std input {
+            background-color:transparent;
+            border-bottom: 1px solid #666;
+            border-top: 0px;
+            border-left: 0px;
+            border-right: 0px;
+            font-family: KaiTi;
+            font-size: 18px;
+        }
+
+        .submit {
+            float: right;
+            margin-top: 30px;
+
+        }
+
+        .submit input {
+            width: 88px;
+            height: 88px;
+            border-radius: 44px;
+            background-color: #231f20;
+            color: #fff;
+            border: 2px solid #00b38a;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<div class="section col-md-9 offset-md-3" style="height: 1000px">
+    <form id="form_jl" action="submit_me">
+        <div class="row">
+        <div class="col-md-6 std">
+            <p>姓名：<input name="user" type="text" value="{{ name }}"></p>
+            <p>性别：<input name="sex" type="text" value="{{ sex }}" ></p>
+            <p>年龄：<input name="age" type="number" value="{{ age }}"></p>
+            <p>学历：<input name="edu" type="text" value="{{ edu }}"></p>
+            <p>特长：<input name="tc" type="text" value="{{ tc }}"></p>
+            <p>技能：<input name="jn" type="text" value="{{ jn }}"></p>
+            <p>电话：<input name="tel" type="text" value="{{ tel }}"></p>
+            <p>邮箱：<input name="email" type="text" value="{{ email }}"></p>
+
+            <p>希望薪水：
+                <input name="sal1" style="width:50px"  type="number" value="{{ sal1 }}">K -
+                <input name="sal2" style="width:50px"  type="number" value="{{ sal2 }}">K</p>
+            <p>工作经验：<input name="workingExp" style="width:148px" type="number" value="{{ workingExp }}">年</p>
+            <p>意向职位：<input name="wantJob" style="width:159px" type="text" value="{{ wantJob }}"></p>
+            <p>毕业学校：<input name="school" style="width:159px" type="text" value="{{ school }}"></p>
+        </div>
+        <div class="col-md-6 jl">
+            <p>
+            <h3>工作经历</h3></p>
+            <textarea name="gzjl" cols="" rows="">{{ gzjl }}</textarea>
+
+            <p>
+            <h3>教育背景</h3></p>
+            <textarea name="jybj" cols="" rows="">{{ jybj }}</textarea>
+
+            <p>
+            <h3>自我介绍</h3></p>
+            <textarea name="zwjs" cols="" rows="">{{ zwjs }}</textarea>
+
+            <div class="submit"><input id="submit_jl" type="submit" value="保存简历"></div>
+        </div>
+        </div>
+    </form>
+</div>
+<script>
+    $($('.nav-item')[3]).addClass('active');
+</script>
+{% endblock %}

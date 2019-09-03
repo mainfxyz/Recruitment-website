@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% block title %}招聘首页{% endblock %}
+
+{% block body %}
+
+<div class="container" style="margin-top:20px;height: 2000px">
+    <div class="row">
+        <div class="col-sm-10">
+        <form class="sf" action="javascript:void;">
+            <input class="si" type="search" placeholder="搜索">
+            <button class="sb" type="submit">搜索</button>
+        </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10">
+        <ul class="screen">
+            <li id="we">
+                <span>工作经验：</span><a id="nowe" class="chosen bx">不限</a><a id="we1" class="xz">1~3年</a><a id="we2" class="xz">3~5年</a>
+                    <a id="we3" class="xz">5~10年</a><a id="we4" class="xz">10年以上</a>
+            </li>
+            <li id="edu">
+                <span>学历要求：</span><a id="noedu" class="chosen bx">不限</a><a id="edu1" class="xz">大专</a><a id="edu2" class="xz">本科</a>
+                    <a id="edu3" class="xz">硕士</a><a id="edu4" class="xz">博士</a><a id="edu5" class="xz">不要求</a>
+            </li>
+            <li id="job">
+                <span>行业领域：</span><a id="nojob" class="chosen bx">不限</a><a id="job1" class="xz">教育</a><a id="job2" class="xz">互联网</a>
+                    <a id="job3" class="xz">管理</a><a id="job4" class="xz">文秘</a><a id="job5" class="xz">电子</a><a id="job6" class="xz">机械</a>
+                    <a id="job7" class="xz">客服</a><a id="job8" class="xz">销售</a><a id="job9" class="xz">银行</a><a id="job10" class="xz">保险</a>
+                    <a id="job11" class="xz">汽车</a><a id="job12" class="xz">采购</a><a id="job13" class="xz">化工</a><a id="job14" class="xz">设计</a>
+            </li>
+            <li id="salary">
+                <span>薪资要求：</span><a id="nosa" class="chosen bx">不限</a><a id="sa1" class="xz">3千以下</a><a id="sa2" class="xz">3千~5千</a><a id="sa3" class="xz">5千~1万</a>
+                    <a id="sa4" class="xz">1万~3万</a><a id="sa5" class="xz">3万以上</a><a id="sa6" class="xz">面议</a>
+            </li>
+        </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10">
+            {% load screenF %}
+            {% for row in object_list %}
+            <article style="background-color: white">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <a class="jobName" target="_blank" href="#">{{row.jobName}}</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <a class="company" href="#">{{row.company}}</a>
+                    </div>
+                </div>
+                <div class="row" style="height:20px"></div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <a class="salary" style="color:red;font-size:18px;margin-right: 20px;">{{row.K1|K:row.K2}}</a>
+                        <a class="yq" >{{row.W1|W:row.W2}}&nbsp;/&nbsp;{{row.eduLevel}}</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <a id="{{row.id}}" class="yp" style="color:#fff">投递</a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+    </div>
+{% include 'page.html' %}
+</div>
+
+<script>
+    $($('.nav-item')[0]).addClass('active')
+
+    function getParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+    //筛选条件标签设置函数
+    var sx=function() {
+        var path = window.location.pathname;
+        if (path.search('/list_') != -1) {
+            var v = path.match('/list_(.*)')[1];
+            $('.si').val(decodeURI(v));
+        }
+
+        var we = getParam('we');
+        var edu = getParam('edu');
+        var job = getParam('job');
+        var salary = getParam('salary');
+        var page = getParam('page');
+
+        if (we != null && we != "") {
+            we.split('_').forEach(function (item) {
+                $('#' + item).addClass("chosen");
+            })
+            $("#nowe").removeClass("chosen")
+        } else
+            $("#nowe").addClass("chosen");
+
+        if (edu != null && edu != "") {
+            edu.split('_').forEach(function (item) {
+                $('#' + item).addClass("chosen");
+            })
+            $("#noedu").removeClass("chosen")
+        } else
+            $("#noedu").addClass("chosen");
+
+        if (job != null && job != "") {
+            job.split('_').forEach(function (item) {
+                $('#' + item).addClass("chosen");
+            })
+            $("#nojob").removeClass("chosen")
+        } else
+            $("#nojob").addClass("chosen");
+
+        if (salary != null && salary != "") {
+            salary.split('_').forEach(function (item) {
+                $('#' + item).addClass("chosen");
+            })
+            $("#nosa").removeClass("chosen")
+        } else
+            $("#nosa").addClass("chosen");
+    }
+
+    sx();
+
+       $('.xz').click(function(){
+        var id=$(this).attr('id');
+
+        param=window.location.search;
+
+        var pid=$(this).parent().attr('id');//pid为父标签
+        var pp = getParam(pid);//pp:当前条件已有参数
+
+        var json=p2j(param);
+
+        //如果原来链接有参数，并且有该参数，则删除，否则添加
+        if(pp!=null)
+        {
+            if(pp.search(id)==-1)
+                pp+=id+'_';
+            else
+                pp=pp.replace(id+'_',"");
+        }
+        else
+            pp=id+"_";
+        //end---pp是处理后的字符串
+
+        json[pid]=pp;
+        var params=j2p(json);
+        window.location.href='?'+params;
+    });
+
+    $('.bx').click(function() {
+        var param=window.location.search;
+        var json=p2j(param);
+        var pid=$(this).parent().attr('id');//pid为父标签
+        delete json[pid];
+        var param=j2p(json);
+        window.location.href='?'+param;
+    });
+
+    $('.sb').click(function () {
+        var param=window.location.search;
+        var val=$('.si').val();
+        window.location.href='list_'+val+param;
+    });
+
+
+    $('.yp').click(function () {
+        var jobName;
+        $(this).parents("article").find(".jobName").each(function (i,t) {
+            jobName=$(t).html();
+        })
+        console.log(jobName);
+
+        var data={};
+        data.jobName=jobName;
+        data.zpId=$(this).attr('id');
+        $.get('/CVgo',data,function (result,status) {
+           if(result=='OK')
+               toastr.success("投递成功");
+           else
+               toastr.error(result);
+       })
+    });
+</script>
+{% endblock %}

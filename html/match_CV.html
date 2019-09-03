@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}简历推荐{% endblock %}
+
+{% block body %}
+
+<div class="container" style="margin-top:20px">
+    <div class="row">
+        <div class="col-sm-10">
+            {% load screenF %}
+            {% for row in object_list %}
+            <article>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <a class="jobName" target="_blank" href="{{row.url}}">{{row.jobName}}</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <a class="company" href="{{row.url}}">{{row.company}}</a>
+                    </div>
+                </div>
+                <div class="row" style="height:20px"></div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <a class="salary" style="color:red;font-size:18px;margin-right: 20px;">{{row.K1|K:row.K2}}</a>
+                        <a class="yq">{{row.W1|W:row.W2}}&nbsp;/&nbsp;{{row.eduLevel}}</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <a class="yp" style="color:#fff">投递</a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% include 'page.html' %}
+<script>
+    $($('.nav-item')[1]).addClass('active');
+</script>
+{% endblock %}

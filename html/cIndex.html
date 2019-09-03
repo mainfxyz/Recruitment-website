@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% block title %}{{ name }}{% endblock %}
+{% block css %}
+<style>
+    .com_info{
+        border: 0px;
+    }
+    .b{
+        height: 40px;
+        border: 0px;
+        color: #fff;
+        margin-left: 30px;
+        background-color: #343a40;
+        border-radius: 5px;
+    }
+    .button{
+        background-color: #030303;
+        color: #fff;
+        padding: 5px 10px 5px 10px;
+        margin-left: 10px;
+        border-radius: 5px;
+    }
+    .inZp{
+        width:40px;
+        background-color: transparent;
+        border: 0px;
+    }
+</style>
+{% endblock %}
+{% block nav %}
+<li class="nav-item">
+    <a class="nav-link active" href="/cIndex">公司首页</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/cAppli">查看应聘</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/">进入用户版</a>
+</li>
+{% endblock %}
+{% block body %}
+<div class="container" style="min-height: 1000px">
+    <div class="row">
+        <div class="col-md-10">
+
+
+            <form id="comInfo" action="/saveComInfo" method="get">
+            {%csrf_token%}
+            <div class="row">
+                <div class="col-md-7">
+                    <h4>
+                    <label for="name">公司名称：</label>
+                    <input name="name" id="name" type="text" value="{{ name }}" class="com_info">
+                    </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="type">公司类型：</label>
+                    <input name="type" id="type" type="text" value="{{ type }}" class="com_info" style="width: 40px">
+                    <label for="ps">公司规模：</label>
+                    <input name="ps" id="ps" type="text" value="{{ ps }}" class="com_info" style="width: 50px;text-align: right;">人以上
+                </div>
+                <div class="col-md-6">
+                    <label for="tel">电话：</label>
+                    <input name="tel" id="tel" type="number" value="{{tel}}" class="com_info" style="width: 120px">
+                    <label for="email">邮箱：</label>
+                    <input name="email" id="email" type="email" value="{{ email }}" class="com_info" style="width: 150px">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="info">公司简介：</label>
+                    <textarea name="info" id="info" style="height: 300px;width: 100%;border: 0px;">{{ info }}</textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <input class="pull-right b" type="submit" value="保存公司信息">
+                    <input class="pull-right b" type="button" value="添加招聘信息" data-toggle="modal" data-target="#add_model">
+                </div>
+            </div>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10 table-responsive">
+            <table class="table table-hover" style="margin-top: 30px;min-width: 550px;">
+            <thead>
+                <tr>
+                    <th>职位名称</th>
+                    <th>学历要求</th>
+                    <th>最低月薪</th>
+                    <th>最高月薪</th>
+                    <th>最低经验</th>
+                    <th>最高经验</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% load screenF %}
+            {% for row in object_list %}
+                <tr>
+                    <td><input class="inZp" type="text" value="{{row.jobName}}" style="width:100px"></td>
+                    <td><input class="inZp" type="text" value="{{row.eduLevel}}"></td>
+                    <td><input class="inZp" type="number" value="{{row.K1}}">千</td>
+                    <td><input class="inZp" type="number" value="{{row.K2}}">千</td>
+                    <td><input class="inZp" type="number" value="{{row.W1}}">年</td>
+                    <td><input class="inZp" type="number" value="{{row.W2}}">年</td>
+                    <td style="width:160px">
+                        <a class="button del" style="color: #ffffff" pid="{{row.id}}">删除</a>
+                        <a class="button save" style="color: #ffffff" pid="{{row.id}}">保存</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+  <!-- 模态框 -->
+  <div class="modal fade" id="add_model">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- 模态框头部 -->
+        <div class="modal-header">
+          <h4 class="modal-title">添加招聘信息</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- 模态框主体 -->
+        <div class="modal-body">
+            <form action="/addZp" method="get">
+                <input class="form-control" name="jobName" type="text" placeholder="职位名称">
+                <p></p>
+                <input class="form-control" name="eduLevel" type="text" placeholder="学历要求">
+                <p></p>
+                <div class="form-group">
+                    <label class="radio-inline"><input class="form-control" type="number" name="W1" placeholder="最低工作经验"></label>年~
+                    <label class="radio-inline"><input class="form-control" type="number" name="W2" placeholder="最高工作经验"></label>年
+                </div>
+                <p></p>
+                <div class="form-group">
+                    <label class="radio-inline"><input class="form-control" type="text" name="K1" placeholder="最低薪资"></label>K~
+                    <label class="radio-inline"><input class="form-control" type="text" name="K2" placeholder="最高薪资"></label>K
+                </div>
+                <p></p>
+                    <input class="form-control" name="jobType" type="text" placeholder="职业类型">
+                <p></p>
+                <textarea class="form-control" name="zpInfo" style="height: 150px;" placeholder="职位描述"></textarea>
+                <p></p>
+                <p id="logData"></p>
+                <input id="addZp" class="btn btn-success btn-block" type="submit" value="添加">
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% include 'page.html' %}
+<script>
+    $('.save').click(function () {
+        var data={};
+        data.pid=$(this).attr('pid');
+        var f=['jobName','eduLevel','K1','K2','W1','W2'];
+        var id = $(this).parents("tr").find("input").each(function (i,t) {
+            var key=f[i];
+            var v=$(t).val();
+            data[key]=v;
+        })
+        console.log(data);
+        $.get('/saveZp',data,function (result,status) {
+            if(status=='success' && result=="保存成功")
+                toastr.success(result);
+            else
+                toastr.error(result);
+        });
+    });
+
+    $('.del').click(function () {
+        var data={};
+        data.pid=$(this).attr('pid');
+        $.get('/delZp',data,function (result,status) {
+            if(status=='success' && result=="删除成功") {
+                toastr.success(result);
+                window.location.reload();
+            }
+            else
+                toastr.error(result);
+        });
+    });
+</script>
+{% endblock %}

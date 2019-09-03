@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}{{ name }}{% endblock %}
+{% block nav %}
+<li class="nav-item">
+    <a class="nav-link" href="/cIndex">公司首页</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/cZp">发布招聘</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/cAppli">查看应聘</a>
+</li>
+{% endblock %}
+
+{% block body %}
+<table class="table table-dark table-hover" style="background-color: #030303">
+    <thead>
+    <tr>
+        <th>职位名称</th>
+        <th>应聘姓名</th>
+        <th></th>
+        <th>经验要求</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>John</td>
+        <td>某某某有限公司</td>
+        <td>6K~10K</td>
+        <td><button>查看简历</button></td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    $($('.nav-item')[1]).addClass('active');
+</script>
+{% endblock %}
